@@ -45,8 +45,8 @@ It is important to notice that the TagID of all implicit tags will be always sma
 
 The definition of the TagIds are:
 
-TagId | Type | Value Type | Tag name
------ | ---- | ---------- | --------
+TagId | Type | Size | Value Type | Tag name
+----- | ---- | ---- | ---------- | --------
 0 | NULL | 0 | The NULL value. | IL_NULL_TAG
 1 | BOOL | 1 | A boolean value. | IL_BOOL_TAG
 2 | INT8 | 1 | 8-bit signed int. | IL_INT8_TAG
@@ -73,8 +73,8 @@ The ILTag reserves all TagID values from 0 to 31 to the standard. All standards 
 
 ### Standard explicit tags
 
-TagId | Type | Size | Value Type | Tag name
------ | ---- | ---- | ---------- | --------
+TagId | Type | Value Type | Tag name
+----- | ---- | ---------- | --------
 16 | ByteArray | A raw byte array. | IL_BYTES_TAG
 17 | String |  UTF-8 encoded string. | IL_STRING_TAG
 18 | BigInteger | A big integer encoded in big endian format. | IL_BINT_TAG
