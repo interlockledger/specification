@@ -69,4 +69,4 @@ This format has a few well known limitations:
 
 ## Licensing
 
-This format is licensed under public domain and can be used by any purpose freely.
+This format is licensed under public domain and may be used by any purpose freely.
