@@ -45,8 +45,8 @@ It is important to notice that the TagID of all implicit tags will be always sma
 
 The definition of the TagIds are:
 
-TagId | Type | Size | Value Type | Tag name
------ | ---- | ---- | ---------- | --------
+TagId | Type | Value Type | Tag name
+----- | ---- | ---------- | --------
 0 | NULL | 0 | The NULL value. | IL_NULL_TAG
 1 | BOOL | 1 | A boolean value. | IL_BOOL_TAG
 2 | INT8 | 1 | 8-bit signed int. | IL_INT8_TAG
