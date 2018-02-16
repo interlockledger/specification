@@ -80,7 +80,8 @@ TagId | Type | Value Type | Tag name
 18 | BigInteger | A big integer encoded in big endian format. | IL_BINT_TAG
 19 | BigDecimal | A big decimal number. | IL_BDEC_TAG
 20 | ILIntArray | An array of ILint. | IL_ILINTARRAY_TAG
-21 | ILTagArray | An array of some ILTag | IL_ILTAGARRAY_TAG
+21 | ILTagArray | An array of ILTag | IL_ILTAGARRAY_TAG
+22 | ILTagSequence | An sequence of ILTag | IL_ILTAGSEQ_TAG
 
 All values from 22 to 31 are reserved for future uses.
 
@@ -108,4 +109,12 @@ The ILIntArray is a simple array of ILInt values. It uses that TagID 20 and hold
 
 #### ILTagArray
 
-The ILTagArray is a simple array of ILTag values. It uses that TagID 21 and holds a length as an encoded ILInt followed by that number of ILTag serializations.
+The ILTagArray is a simple array of ILTag values. It uses that TagID 21 and contains
+an ILInt that represents the number of elements followed by the serizalization of
+the tags.
+
+#### ILTagSequence
+
+The ILTagSequence is a simple sequence of ILTag values. It uses that TagID 22 and holds
+a sequence of ILTag. It is similar to **ILTagArray** but it does not encode
+the number of elements prior to the tags.
