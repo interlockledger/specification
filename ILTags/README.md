@@ -82,8 +82,10 @@ TagId | Type | Value Type | Tag name
 20 | ILIntArray | An array of ILint. | IL_ILINTARRAY_TAG
 21 | ILTagArray | An array of ILTag | IL_ILTAGARRAY_TAG
 22 | ILTagSequence | An sequence of ILTag | IL_ILTAGSEQ_TAG
+23 | Range | A range of ILTagId | IL_RANGE_TAG
+24 | Version | Semantic version number (major.minor.build.release) | IL_VERSION_TAG
 
-All values from 22 to 31 are reserved for future uses.
+All values from 25 to 31 are reserved for future uses.
 
 #### ByteArray
 
@@ -118,3 +120,5 @@ the tags.
 The ILTagSequence is a simple sequence of ILTag values. It uses that TagID 22 and holds
 a sequence of ILTag. It is similar to **ILTagArray** but it does not encode
 the number of elements prior to the tags.
+
+
