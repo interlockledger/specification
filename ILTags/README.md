@@ -82,39 +82,62 @@ TagId | Type | Value Type | Tag name
 20 | ILIntArray | An array of ILint. | IL_ILINTARRAY_TAG
 21 | ILTagArray | An array of ILTag | IL_ILTAGARRAY_TAG
 22 | ILTagSequence | An sequence of ILTag | IL_ILTAGSEQ_TAG
+23 | Range | A range of ILTagId | IL_RANGE_TAG
+24 | Version | Semantic version number (major.minor.revision.build) | IL_VERSION_TAG
 
-All values from 22 to 31 are reserved for future uses.
+All values from 25 to 31 are reserved for future uses.
 
 #### ByteArray
 
-The ByteArray is a simple byte array value. It uses that TagID 16 and holds a raw byte array as its value.
+The ByteArray is a simple byte array value. It uses the TagID 16 and holds a raw byte array as its value.
 
 #### String
 
-The String represents a text value. It uses that TagID 17 and holds a UTF-8 encoded value.
+The String represents a text value. It uses the TagID 17 and holds a UTF-8 encoded value.
 
 #### BigInteger
 
-The BigInteger represents a big integer value. It uses that TagID 18 and holds the big integer value encoded as a two's complement big endian value.
+The BigInteger represents a big integer value. It uses the TagID 18 and holds the big integer value encoded as a two's complement big endian value.
 
 #### BigDecimal
 
-The BigDecimal represents a big decimal value. It uses that TagID 19 and holds two fields. The first field is an 32-bit signed integer that represents the scale of the value followed by the integral part of the value encoded as a two's complement big endian value. The actual value is computed as follows:
+The BigDecimal represents a big decimal value. It uses the TagID 19 and holds two fields. The first field is an 32-bit signed integer that represents the scale of the value followed by the integral part of the value encoded as a two's complement big endian value. The actual value is computed as follows:
 
     v = integralPart * 10^(-scale)
 
 #### ILIntArray
 
-The ILIntArray is a simple array of ILInt values. It uses that TagID 20 and holds a length as an encoded ILInt followed by that number of ILInt encoded values.
+The ILIntArray is a simple array of ILInt values. It uses the TagID 20 and holds a length as an encoded ILInt followed by that number of ILInt encoded values.
 
 #### ILTagArray
 
-The ILTagArray is a simple array of ILTag values. It uses that TagID 21 and contains
-an ILInt that represents the number of elements followed by the serizalization of
+The ILTagArray is a simple array of ILTag values. It uses the TagID 21 and contains
+an ILInt that represents the number of elements followed by the serialization of
 the tags.
 
 #### ILTagSequence
 
-The ILTagSequence is a simple sequence of ILTag values. It uses that TagID 22 and holds
+The ILTagSequence is a simple sequence of ILTag values. It uses the TagID 22 and holds
 a sequence of ILTag. It is similar to **ILTagArray** but it does not encode
 the number of elements prior to the tags.
+
+#### Range
+
+The Range defines a contiguous range of UINT64 numbers, at least 1 and a maximum of 65535 numbers. It uses the TagID 23 and holds
+one ILInt for the first number in the range, followed by a count of sequential numbers in the range serialized 
+as one unsigned short (16 bits) in big-endian format.
+
+	Ex.: [128-136] => 23, 3, 128, 8, 0
+
+
+#### Version
+
+The Version defines a Semantic Version Number with four parts (major.minor.revision.build). It uses the TagID 24 and holds
+four signed integers (32 bits) serialized in big-endian format in the order of 'major', 'minor', 'revision' and 'build'.
+
+	Ex.: 1.0.0.0 => 24, 16, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+
+
+
+
+
