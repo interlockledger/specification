@@ -14,6 +14,9 @@ It has been used by **OpenCS** in multiple projects since its introduction in 20
 Symbol | Description
 ------ | -----------
 *a* \|\| *b* | *a*
+*a* % *b* | Remainder of *a* divided by *b* (modulo operator)
+*a[]* | Array of octets (bytes)
+*a[i]* | Element at position *i* of the array *a*
 
 ## The scheme
 
@@ -33,9 +36,9 @@ The *paddedData* is computed as:
 
 The function *ocspad(dataSize, blockSize, random())* is defined as:
 
-1. Let *paddingSize* = *blockSize* - (dataSize mod blockSize)
+1. Let *paddingSize* = *blockSize* - (dataSize % blockSize)
 2. Let *padding = random(paddingSize)*;
-3. Let *padding[paddingSize - 1] = padding[paddingSize - 1] - ((padding[paddingSize - 1] mod blocksize) + (paddingSize mod blocksize)*
+3. Let *padding[paddingSize - 1] = padding[paddingSize - 1] - ((padding[paddingSize - 1] % blocksize) + (paddingSize % blocksize)*
 4. Return *padding*;
 
 The function that recovers the size of the padding takes as the input:
@@ -49,7 +52,7 @@ and outputs:
 
 The value *paddingSize* is computed as:
 
-1. Let *paddingSize = paddedData[len(paddedData) - 1] mod blockSize*;
+1. Let *paddingSize = paddedData[len(paddedData) - 1] % blockSize*;
 1. If *paddingSize* is 0, let *paddingSize = blockSize*;
 1. Return *paddingSize*
 

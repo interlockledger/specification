@@ -14,3 +14,7 @@ New algorithms may be added to this list
 ## Digital Signature Algorithms
 
 * [Digital Signature algorithms](dsign.md)
+
+## Other Algorithms
+
+* [OpenCS Random Padding](ocs-random-padding.md)
