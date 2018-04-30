@@ -1,9 +1,11 @@
 # ILTags Specification
 
+* Chino, F. J. T.
+* Teixeira, A. R. D.
+
 ## Introduction
 
-The **ILTags** is a TLV (type, lenght and value) format that uses the 
-[**ILInt**](https://github.com/interlockledger/specification/tree/master/ILInt)
+The **ILTags** is a TLV (type, lenght and value) format that uses the **ILInt** [OPENCS]
 to encode the integer types. Its main design goals are:
 
 * Be as compact as possible;
@@ -45,24 +47,24 @@ It is important to notice that the TagID of all implicit tags will be always sma
 
 The definition of the TagIds are:
 
-TagId | Type | Size | Value Type | Tag name
------ | ---- | ---- | ---------- | --------
-0 | NULL | 0 | The NULL value. | IL_NULL_TAG
-1 | BOOL | 1 | A boolean value. | IL_BOOL_TAG
-2 | INT8 | 1 | 8-bit signed int. | IL_INT8_TAG
-3 | UINT8 | 1 | 8-bit unsigned int. | IL_UINT8_TAG
-4 | INT16 | 2 | 16-bit signed int. | IL_INT16_TAG
-5 | UINT16 | 2 | 16-bit unsigned int. | IL_UINT16_TAG
-6 | INT32 | 4 | 32-bit signed int. | IL_INT32_TAG
-7 | UINT32 | 4 | 32-bit unsigned int. | IL_UINT32_TAG
-8 | INT64 | 8 | 64-bit signed int. | IL_INT64_TAG
-9 | UINT64 | 8 | 64-bit unsigned int. | IL_UINT64_TAG
-10 | ILInt | 1 to 9 | A ILInt value. | IL_ILINT_TAG
-11 | binary32 | 4 | IEEE754 32-bit floating point. | IL_BIN32_TAG
-12 | binary64 | 8 | IEEE754 64-bit floating point. | IL_BIN64_TAG
-13 | binary128 | 16 | IEEE754 128-bit floating point. | IL_BIN128_TAG
-14 | Reserved | - | Reserved for future uses. | -
-15 | Reserved | - | Reserved for future uses. | -
+TagId | Type | Size | Value Type | Tag name | ASN.1 Equivalent
+----- | ---- | ---- | ---------- | -------- | ----------------
+0 | NULL | 0 | The NULL value. | IL_NULL_TAG | EOC
+1 | BOOL | 1 | A boolean value. | IL_BOOL_TAG | BOOLEAN
+2 | INT8 | 1 | 8-bit signed int. | IL_INT8_TAG | - 
+3 | UINT8 | 1 | 8-bit unsigned int. | IL_UINT8_TAG | -
+4 | INT16 | 2 | 16-bit signed int. | IL_INT16_TAG | -
+5 | UINT16 | 2 | 16-bit unsigned int. | IL_UINT16_TAG | -
+6 | INT32 | 4 | 32-bit signed int. | IL_INT32_TAG | -
+7 | UINT32 | 4 | 32-bit unsigned int. | IL_UINT32_TAG | -
+8 | INT64 | 8 | 64-bit signed int. | IL_INT64_TAG | -
+9 | UINT64 | 8 | 64-bit unsigned int. | IL_UINT64_TAG | -
+10 | ILInt | 1 to 9 | A ILInt value. | IL_ILINT_TAG | -
+11 | binary32 | 4 | IEEE754 32-bit floating point. | IL_BIN32_TAG | -
+12 | binary64 | 8 | IEEE754 64-bit floating point. | IL_BIN64_TAG | -
+13 | binary128 | 16 | IEEE754 128-bit floating point. | IL_BIN128_TAG | -
+14 | Reserved | - | Reserved for future uses. | - | -
+15 | Reserved | - | Reserved for future uses. | - | -
 
 All integer values are encoded in big endian (most significant bit first) format while
 the floating point values are represented according to IEEE754, also encoded in BigEndian.
@@ -73,19 +75,20 @@ The ILTag reserves all TagID values from 0 to 31 to the standard. All standards 
 
 ### Standard explicit tags
 
-TagId | Type | Value Type | Tag name
------ | ---- | ---------- | --------
-16 | ByteArray | A raw byte array. | IL_BYTES_TAG
-17 | String |  UTF-8 encoded string. | IL_STRING_TAG
-18 | BigInteger | A big integer encoded in big endian format. | IL_BINT_TAG
-19 | BigDecimal | A big decimal number. | IL_BDEC_TAG
-20 | ILIntArray | An array of ILint. | IL_ILINTARRAY_TAG
-21 | ILTagArray | An array of ILTag | IL_ILTAGARRAY_TAG
-22 | ILTagSequence | An sequence of ILTag | IL_ILTAGSEQ_TAG
-23 | Range | A range of ILTagId | IL_RANGE_TAG
-24 | Version | Semantic version number (major.minor.revision.build) | IL_VERSION_TAG
+TagId | Type | Value Type | Tag name | ASN.1 Equivalent
+----- | ---- | ---------- | -------- | ----------------
+16 | ByteArray | A raw byte array. | IL_BYTES_TAG | OCTET STRING
+17 | String |  UTF-8 encoded string. | IL_STRING_TAG | CHARACTER STRING (limited to UTF-8) 
+18 | BigInteger | A big integer encoded in big endian format. | IL_BINT_TAG | INTEGER
+19 | BigDecimal | A big decimal number. | IL_BDEC_TAG | -
+20 | ILIntArray | An array of ILint. | IL_ILINTARRAY_TAG | -
+21 | ILTagArray | An array of ILTag | IL_ILTAGARRAY_TAG | - 
+22 | ILTagSequence | An sequence of ILTag | IL_ILTAGSEQ_TAG | -
+23 | Range | A range of ILTagId | IL_RANGE_TAG | -
+24 | Version | Semantic version number (major.minor.revision.build) | IL_VERSION_TAG | -
+25 | ITU Object Identifier | An array of ILint (reserved for future uses). | IL_OID_TAG | OBJECT IDENTIFIER
 
-All values from 25 to 31 are reserved for future uses.
+All values from 26 to 31 are reserved for future uses.
 
 #### ByteArray
 
@@ -129,7 +132,6 @@ as one unsigned short (16 bits) in big-endian format.
 
 	Ex.: [128-136] => 23, 3, 128, 8, 0
 
-
 #### Version
 
 The Version defines a Semantic Version Number with four parts (major.minor.revision.build). It uses the TagID 24 and holds
@@ -137,7 +139,11 @@ four signed integers (32 bits) serialized in big-endian format in the order of '
 
 	Ex.: 1.0.0.0 => 24, 16, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 
+#### ITU Object Identifier
 
+This tag stores the ITU Object identifier. Each element will be stored as a 64 bit
+unsigned integer encoded using a ILInt format. In other words, it is just a sequence of ILInt values (one for each element) preceeded by an ILInt that encodes the number of elements. It follows the same serialization of IL_ILINTARRAY_TAG.
 
+## References
 
-
+* [OPENCS] Chino, F. J. T. and Teixeira, A. R. D.; ["ILInt Specification"](https://github.com/interlockledger/specification/blob/master/ILInt), Open Communications Security, 2017;
