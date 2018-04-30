@@ -1,5 +1,8 @@
 # ILInt Specification
 
+* Chino, F. J. T.
+* Teixeira, A. R. D.
+
 ## Introduction
 
 The **ILInt** is a format that can be used to encode an unsigned 64-bit integer in the
