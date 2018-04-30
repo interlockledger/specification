@@ -27,7 +27,7 @@ Reserved | It is reserved for future uses but should not be used.
 ID | Name | Support status | References
 -- | ---- | -------------- | ----------
 0 | [RSA SSA-PSS](rsa.md) | Mandatory | PKCS#1
-1 | [RSA v1.5](rsa.md) | Mandatory | PKCS#1 
+1 | [RSA v1.5](rsa.md) | Mandatory (legacy support) | PKCS#1
 2 | [DSA](dsa.md) | Planned | FIPS 186-4
 3 | [ElGamal Signature Scheme](elgamal.md) | Planned | ElGamal,T.; *A public key cryptosystem and a signature scheme based on discrete logarithms*;  IEEE Transactions on Information Theory (Volume: 31, Issue: 4, Jul 1985)
 4 | [ECDSA](ecdsa.md) | Planned | X9.62-2005 and FIPS 186-3

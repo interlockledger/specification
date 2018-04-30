@@ -11,6 +11,14 @@ This format is based on the ILTags format.
 
 ## Custom tags
 
+### IRKS_KEY
+
+This is a Tag sequence with the following fields
+
+* KeyName: 
+* KeyType: 
+* Encrypted:
+
 ### IRKS_ROOT
 
 It is a tag array with the ID 0x49524C4B. With this ID, the prefix of
@@ -21,9 +29,4 @@ the file will always be:
 This will generate the string IRKS starting on the second byte of the file.
 
 All tags inside this array will assume the type IRKS_KEY.
-
-### IRKS_KEY
-
-This is a Tag sequence
-
 
