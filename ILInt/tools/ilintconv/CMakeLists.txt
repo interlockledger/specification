@@ -28,14 +28,14 @@ project(ilintconv
 
 # Including the global modules
 set(MSVC_STATIC_CRT 1)
-include("MSVCCRT.cmake")
+include("cmake/MSVCCRT.cmake")
 
 add_executable(ilintconv
-	ilint.h
-	ilint.c
-	options.h
-	options.c
-	utils.h
-	utils.c
-	main.c)
+	src/ilint.h
+	src/ilint.c
+	src/options.h
+	src/options.c
+	src/utils.h
+	src/utils.c
+	src/main.c)
 
