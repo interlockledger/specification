@@ -74,6 +74,8 @@ bool uint64ToDec(uint64_t v, char * s, uint64_t * sSize);
 
 bool hexToUint64(const char * s, uint64_t * v);
 
+bool decToUint64(const char * s, uint64_t * v);
+
 bool hexToBin(const char * s, uint8_t * bin, uint64_t * binSize);
 
 bool binToHex(const uint8_t * bin, uint64_t * binSize, char * s, uint64_t sSize);

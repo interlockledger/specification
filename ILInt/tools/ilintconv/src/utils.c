@@ -100,7 +100,20 @@ bool uint64ToDec(uint64_t v, char * s, uint64_t * sSize) {
 }
 
 //------------------------------------------------------------------------------
-bool hexToUint64(const char * s, uint64_t * v);
+bool strToUint64Core(const char * s, unsigned int base, uint64_t * v) {
+	return false;
+}
+
+
+//------------------------------------------------------------------------------
+bool hexToUint64(const char * s, uint64_t * v) {
+	return strToUint64Core(s, 16, v);
+}
+
+//------------------------------------------------------------------------------
+bool decToUint64(const char * s, uint64_t * v) {
+	return strToUint64Core(s, 10, v);
+}
 
 //------------------------------------------------------------------------------
 bool hexToBin(const char * s, uint8_t * bin, uint64_t * binSize);
