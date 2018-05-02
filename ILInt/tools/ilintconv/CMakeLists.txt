@@ -30,6 +30,9 @@ project(ilintconv
 set(MSVC_STATIC_CRT 1)
 include("cmake/MSVCCRT.cmake")
 
+# GoogleTest
+include("cmake/GTest.cmake")
+
 add_executable(ilintconv
 	src/ilint.h
 	src/ilint.c
@@ -38,4 +41,27 @@ add_executable(ilintconv
 	src/utils.h
 	src/utils.c
 	src/main.c)
+
+if(GTEST_FOUND)
+
+add_executable(ilintconv-test
+	src/ilint.h
+	src/ilint.c
+	src/options.h
+	src/options.c
+	src/utils.h
+	src/utils.c
+	test/OptionsTest.h
+	test/UtilsTest.h
+	test/UtilsTest.cpp
+	test/OptionsTest.cpp
+	test/main.cpp)
+
+target_include_directories(ilintconv-test
+	PRIVATE src)
+
+target_link_libraries(ilintconv-test
+	GTest)
+
+endif()
 
