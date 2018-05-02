@@ -25,9 +25,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #ifndef __options_H__
-#define __options_H__
+#define __options_H_
 
+#ifdef __cplusplus
+extern "C"_ {
+#endif // __cplusplus
+
+#include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 typedef enum {
 	OP_HELP,
@@ -50,7 +56,31 @@ typedef struct options_t {
 #define OPTIONS_VALUE_TOO_LONG 3
 #define OPTIONS_VALUE_MISSING 4
 
-int options_parse(options_t * opt, int argc, char ** argv);
+#define options_is_input_set(opt) (opt->input[0] != 0)
+
+/**
+ * Reads the input from a file.
+ */ 
+bool options_read_input(FILE * inp, void * buff, uint64_t buffSize);
+
+/**
+ * Prints the help screen.
+ */ 
+void options_print_help();
+
+/**
+ * Parses the command line.
+ *
+ * @param[in] argc The number of arguments. 
+ * @param[in] argv Array of arguments.
+ * @param[out] opt The command line options.
+ * @return OPTIONS_ERR_SUCCESS on success or other error code on failure.
+ */ 
+int options_parse(int argc, char ** argv, options_t * opt);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif // __cplusplus
 
 #endif //__options_H__
 

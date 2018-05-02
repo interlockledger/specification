@@ -26,7 +26,9 @@
  */
 #include "options.h"
 #include <string.h>
-#include <stdio.h>
+
+//------------------------------------------------------------------------------
+#define options_is_input_set(opt) (opt->input[0] != 0)
 
 //------------------------------------------------------------------------------
 void options_default(options_t * opt) {
@@ -37,18 +39,21 @@ void options_default(options_t * opt) {
 }
 
 //------------------------------------------------------------------------------
-int options_read_input(options_t * opt) {
+bool options_read_input(FILE * inp, void * buff, uint64_t buffSize) {
+	char tmp[4];
 
-	if (opt->input[0]) {
-		return OPTIONS_ERR_TOO_MANY_OPTIONS;
-	} else {
-		fgets(opt->input, OPTIONS_MAX_INPUT, stdin);
-		return 0;
+	if (!fgets(buff, buffSize, inp)) {
+		return false;
 	}
+	return (fgets(tmp, sizeof(tmp), inp) == NULL);
 }
 
 //------------------------------------------------------------------------------
-int options_parse(options_t * opt, int argc, char ** argv) {
+void options_print_help() {
+}
+
+//------------------------------------------------------------------------------
+int options_parse(int argc, char ** argv, options_t * opt) {
 	int i;
 
 	options_default(opt);
@@ -80,9 +85,15 @@ int options_parse(options_t * opt, int argc, char ** argv) {
 		
 		// Check the input
 		if (opt->readInput) {
-			return options_read_input(opt);
+			if (!options_is_input_set(opt)) {
+				if (!options_read_input(stdin, opt->input, sizeof(opt->input))) {
+					return OPTIONS_VALUE_TOO_LONG;
+				}
+			} else {
+				return OPTIONS_ERR_TOO_MANY_OPTIONS;
+			}
 		} else {
-			if (opt->input[0] == 0) {
+			if (!options_is_input_set(opt)) {
 				return OPTIONS_VALUE_MISSING;
 			}
 		}

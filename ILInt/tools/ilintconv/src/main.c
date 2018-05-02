@@ -38,7 +38,7 @@ void printHelp(const char * progName) {
 int main(int argc, char ** argv) {
 	options_t opt;
 
-	int retval = options_parse(&opt, argc, argv);
+	int retval = options_parse(argc, argv, &opt);
 	printf("%d %s\n", retval, opt.input);
 
 	printHelp(argv[0]);
