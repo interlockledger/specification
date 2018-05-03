@@ -37,6 +37,7 @@ extern "C" {
 #define ERR_VALUE_TOO_LONG 3
 #define ERR_VALUE_MISSING 4
 #define ERR_INVALID_VALUE 5
+#define ERR_UNABLE_TO_CONVERT 6
 
 const char * errors_getMessage(int code);
 

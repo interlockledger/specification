@@ -26,8 +26,68 @@
  */
 #include "ilint.h"
 #include "options.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdint.h>
+
+int decode(const options_t * opt) {
+	uint8_t bin[OPTIONS_MAX_INPUT];
+	uint64_t binSize;
+	uint64_t val;
+	uint64_t valSize;
+	char out[32];
+	uint64_t outSize;
+
+	binSize = sizeof(bin);
+	if (!hexToBin(opt->input, bin, &binSize)) {
+		return ERR_INVALID_VALUE;
+	}
+
+	valSize = ilint_decode(bin, binSize, &val);
+	if (valSize == 0) {
+		return ERR_INVALID_VALUE;
+	}
+	if (valSize != binSize) {
+		return ERR_VALUE_TOO_LONG;
+	}
+
+	outSize = sizeof(out);
+	if (opt->hex) {
+		uint64ToHex(val, out, &outSize);
+	} else {
+		uint64ToDec(val, out, &outSize);
+	}
+	printf("%s", out);
+	return ERR_SUCCESS;
+}
+
+int encode(const options_t * opt) {
+	uint64_t val;
+	bool ret;
+	uint8_t enc[16];
+	uint64_t encSize;
+	char hex[32];
+
+	if (opt->hex) {
+		ret = hexToUint64(opt->input, &val);
+	} else {
+		ret = decToUint64(opt->input, &val);
+	}
+	if (!ret) {
+		return ERR_INVALID_VALUE;
+	}
+
+	encSize = ilint_encode(val, enc, sizeof(enc));
+	if (encSize == 0) {
+		return ERR_UNABLE_TO_CONVERT;
+	}
+
+	if (!binToHex(enc, encSize, hex, sizeof(hex))){
+		return ERR_UNABLE_TO_CONVERT;
+	}
+	printf("%s", hex);
+	return ERR_SUCCESS;
+}
 
 int main(int argc, char ** argv) {
 	options_t opt;
@@ -47,7 +107,11 @@ int main(int argc, char ** argv) {
 				}
 			}
 			if (retval == ERR_SUCCESS) {
-
+				if (opt.operation == OP_DECODE) {
+					retval = decode(&opt);
+				} else {
+					retval =encode(&opt);
+				}
 			}
 		}
 	}

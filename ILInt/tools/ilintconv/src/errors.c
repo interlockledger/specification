@@ -37,9 +37,13 @@ const char * errors_getMessage(int code) {
 	case ERR_TOO_MANY_OPTIONS:
 		return "Too many options.";
 	case ERR_VALUE_TOO_LONG:
-		return "Value too long.";
+		return "The input value is too long.";
 	case ERR_VALUE_MISSING:
 		return "Value missing.";
+	case ERR_INVALID_VALUE:
+		return "Invalid input value.";
+	case ERR_UNABLE_TO_CONVERT:
+		return "Unable to perform the conversion";
 	default:
 		return "Unknown error code.";
 	}
