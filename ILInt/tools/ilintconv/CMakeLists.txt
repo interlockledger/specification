@@ -34,6 +34,8 @@ include("cmake/MSVCCRT.cmake")
 include("cmake/GTest.cmake")
 
 add_executable(ilintconv
+	src/errors.h
+	src/errors.c
 	src/ilint.h
 	src/ilint.c
 	src/options.h
@@ -45,6 +47,8 @@ add_executable(ilintconv
 if(GTEST_FOUND)
 
 add_executable(ilintconv-test
+	src/errors.h
+	src/errors.c
 	src/ilint.h
 	src/ilint.c
 	src/options.h

@@ -24,59 +24,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-#ifndef __options_H__
-#define __options_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
-
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdio.h>
 #include "errors.h"
 
-typedef enum {
-	OP_HELP,
-	OP_DECODE,
-	OP_ENCODE
-} options_op_t;
+const char * errors_getMessage(int code) {
 
-#define OPTIONS_MAX_INPUT 32
-
-typedef struct options_t {
-	options_op_t operation;
-	bool hex;
-	bool readInput;
-	char input[OPTIONS_MAX_INPUT];
-} options_t;
-
-
-#define options_is_input_set(opt) ((opt)->input[0] != 0)
-
-/**
- * Reads the input from a file.
- */ 
-bool options_read_input(FILE * inp, void * buff, uint64_t buffSize);
-
-/**
- * Prints the help screen.
- */ 
-void options_print_help(const char * progName);
-
-/**
- * Parses the command line.
- *
- * @param[in] argc The number of arguments. 
- * @param[in] argv Array of arguments.
- * @param[out] opt The command line options.
- * @return ERR_SUCCESS on success or other error code on failure.
- */ 
-int options_parse(int argc, char ** argv, options_t * opt);
-
-#ifdef __cplusplus
-} // extern "C"
-#endif // __cplusplus
-
-#endif //__options_H__
+	switch(code) {
+	case ERR_SUCCESS:
+		return "";
+	case ERR_UNKNOWN_OPTION:
+		return "Unknown option(s).";
+	case ERR_TOO_MANY_OPTIONS:
+		return "Too many options.";
+	case ERR_VALUE_TOO_LONG:
+		return "Value too long.";
+	case ERR_VALUE_MISSING:
+		return "Value missing.";
+	default:
+		return "Unknown error code.";
+	}
+}
 

@@ -25,9 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "UtilsTest.h"
-extern "C" {
-	#include "utils.h"
-} // extern "C"
+#include "utils.h"
 #include <cstring>
 
 //==============================================================================

@@ -29,19 +29,31 @@
 #include <stdio.h>
 #include <stdint.h>
 
-
-void printHelp(const char * progName) {
-	
-	printf("Usage: %s [-c] [-d] [<value>]", progName);
-}
-
 int main(int argc, char ** argv) {
 	options_t opt;
 
 	int retval = options_parse(argc, argv, &opt);
-	printf("%d %s\n", retval, opt.input);
+	if (retval == ERR_SUCCESS) {
+		if (opt.operation == OP_HELP) {
+			options_print_help(argv[0]);
+		} else {
+			if (opt.readInput) {
+				if (options_read_input(stdin, opt.input, sizeof(opt.input))) {
+					if (!options_is_input_set(&opt)) {
+						retval = ERR_VALUE_MISSING;
+					}
+				} else {
+					retval = ERR_VALUE_TOO_LONG;
+				}
+			}
+			if (retval == ERR_SUCCESS) {
 
-	printHelp(argv[0]);
-	return 0;
+			}
+		}
+	}
+	if (retval != ERR_SUCCESS) {
+		fprintf(stderr, "%s\n", errors_getMessage(retval));
+	}
+	return retval;
 }
 

@@ -28,9 +28,6 @@
 #include <string.h>
 
 //------------------------------------------------------------------------------
-#define options_is_input_set(opt) (opt->input[0] != 0)
-
-//------------------------------------------------------------------------------
 void options_default(options_t * opt) {
 	opt->operation = OP_ENCODE;
 	opt->hex = false;
@@ -49,7 +46,16 @@ bool options_read_input(FILE * inp, void * buff, uint64_t buffSize) {
 }
 
 //------------------------------------------------------------------------------
-void options_print_help() {
+void options_print_help(const char * progName) {
+
+	printf("Usage: %s [-c] [-d] [-h] [-x] [<value>]\n", progName);
+	printf("Options:\n");
+	printf("\t-c: Read input from the standard input\n");
+	printf("\t-d: Decodes the ILInt value\n");
+	printf("\t-h: Prints this help screen\n");
+	printf("\t-x: Use hexadecimal constants instead of decimal\n");
+	printf("\n");
+	printf("<value>: the value to be encoded or decoded.\n");
 }
 
 //------------------------------------------------------------------------------
@@ -73,28 +79,26 @@ int options_parse(int argc, char ** argv, options_t * opt) {
 				opt->hex = true;
 			} else {
 				if (opt->input[0]) {
-					return OPTIONS_ERR_TOO_MANY_OPTIONS;
+					return ERR_TOO_MANY_OPTIONS;
 				}
 				if (strlen(val) < OPTIONS_MAX_INPUT) {
 					strcpy(opt->input, val);
 				} else {
-					return OPTIONS_VALUE_TOO_LONG;
+					return ERR_VALUE_TOO_LONG;
 				}
 			}
 		}
 		
 		// Check the input
-		if (opt->readInput) {
-			if (!options_is_input_set(opt)) {
-				if (!options_read_input(stdin, opt->input, sizeof(opt->input))) {
-					return OPTIONS_VALUE_TOO_LONG;
+		if (opt->operation != OP_HELP) {
+			if (opt->readInput) {
+				if (options_is_input_set(opt)) {
+					return ERR_TOO_MANY_OPTIONS;
 				}
 			} else {
-				return OPTIONS_ERR_TOO_MANY_OPTIONS;
-			}
-		} else {
-			if (!options_is_input_set(opt)) {
-				return OPTIONS_VALUE_MISSING;
+				if (!options_is_input_set(opt)) {
+					return ERR_VALUE_MISSING;
+				}
 			}
 		}
 	}
