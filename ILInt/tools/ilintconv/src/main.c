@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdint.h>
 
+//------------------------------------------------------------------------------
 int decode(const options_t * opt) {
 	uint8_t bin[OPTIONS_MAX_INPUT];
 	uint64_t binSize;
@@ -43,7 +44,7 @@ int decode(const options_t * opt) {
 		return ERR_INVALID_VALUE;
 	}
 
-	valSize = ilint_decode(bin, binSize, &val);
+	valSize = ilint_decode(bin, (int)binSize, &val);
 	if (valSize == 0) {
 		return ERR_INVALID_VALUE;
 	}
@@ -61,6 +62,7 @@ int decode(const options_t * opt) {
 	return ERR_SUCCESS;
 }
 
+//------------------------------------------------------------------------------
 int encode(const options_t * opt) {
 	uint64_t val;
 	bool ret;
@@ -89,6 +91,7 @@ int encode(const options_t * opt) {
 	return ERR_SUCCESS;
 }
 
+//------------------------------------------------------------------------------
 int main(int argc, char ** argv) {
 	options_t opt;
 
@@ -120,4 +123,6 @@ int main(int argc, char ** argv) {
 	}
 	return retval;
 }
+
+//------------------------------------------------------------------------------
 

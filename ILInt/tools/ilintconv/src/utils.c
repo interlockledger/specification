@@ -152,6 +152,7 @@ bool hexToBin(const char * s, uint8_t * bin, uint64_t * binSize) {
 
 	*binSize = 0;
 	decSize = 0;
+	bitBuff = 0;
 	while(*s) {
 		int v = digitToValue(*s);
 		if (v >= 16) {

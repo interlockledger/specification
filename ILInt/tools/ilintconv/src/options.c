@@ -39,7 +39,7 @@ void options_default(options_t * opt) {
 bool options_read_input(FILE * inp, void * buff, uint64_t buffSize) {
 	char tmp[4];
 
-	if (!fgets(buff, buffSize, inp)) {
+	if (!fgets(buff, (int)buffSize, inp)) {
 		return false;
 	}
 	return (fgets(tmp, sizeof(tmp), inp) == NULL);
@@ -81,8 +81,9 @@ int options_parse(int argc, char ** argv, options_t * opt) {
 				if (opt->input[0]) {
 					return ERR_TOO_MANY_OPTIONS;
 				}
-				if (strlen(val) < OPTIONS_MAX_INPUT) {
-					strcpy(opt->input, val);
+				uint64_t valLen = strlen(val);
+				if (valLen < OPTIONS_MAX_INPUT) {
+					memcpy(opt->input, val, valLen + 1);
 				} else {
 					return ERR_VALUE_TOO_LONG;
 				}
