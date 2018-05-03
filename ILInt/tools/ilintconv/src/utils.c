@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "utils.h"
+#include <string.h>
 
 //------------------------------------------------------------------------------
 char valueToDigit(int v) {
@@ -101,7 +102,25 @@ bool uint64ToDec(uint64_t v, char * s, uint64_t * sSize) {
 
 //------------------------------------------------------------------------------
 bool strToUint64Core(const char * s, unsigned int base, uint64_t * v) {
-	return false;
+
+	if (*s == 0) {
+		return false;
+	}
+
+	*v = 0;
+	while (*s) {
+		uint64_t val = digitToValue(*s);
+		if (val >= base) {
+			return false;
+		}
+		val = ((*v) * base) + val;
+		if (val < (*v)) {
+			return false;
+		}
+		(*v) = val;
+		s++;
+	}
+	return true;
 }
 
 
@@ -116,7 +135,56 @@ bool decToUint64(const char * s, uint64_t * v) {
 }
 
 //------------------------------------------------------------------------------
-bool hexToBin(const char * s, uint8_t * bin, uint64_t * binSize);
+bool hexToBin(const char * s, uint8_t * bin, uint64_t * binSize) {
+	uint64_t sSize;
+	uint64_t decSize;
+	unsigned int bitBuff;
+
+	sSize = strlen(s);
+	if (sSize & 0x1) {
+		(*binSize) = 0;
+		return false;
+	}
+	if ((*binSize) < (sSize / 2)) {
+		(*binSize) = (sSize / 2);
+		return false;
+	}
+
+	*binSize = 0;
+	decSize = 0;
+	while(*s) {
+		int v = digitToValue(*s);
+		if (v >= 16) {
+			return false;
+		}
+		bitBuff = (bitBuff << 4) + v;
+		decSize++;
+		s++;
+		if ((decSize & 0x1) == 0) {
+			*bin = (uint8_t)bitBuff;
+			bin++;
+		}
+	}
+	(*binSize) = decSize / 2;
+	return true;
+}
 
 //------------------------------------------------------------------------------
-bool binToHex(const uint8_t * bin, uint64_t * binSize, char * s, uint64_t sSize);
+bool binToHex(const uint8_t * bin, uint64_t binSize, char * s, uint64_t sSize) {
+	const uint8_t * binEnd;
+
+	if (sSize < ((binSize * 2) + 1)) {
+		return false;
+	} else {
+		binEnd = bin + binSize;
+		for (; bin != binEnd; bin++) {
+			*s = valueToDigit(((*bin) >> 4) & 0xF);
+			s++;
+			*s = valueToDigit((*bin) & 0xF);
+			s++;
+		}
+		*s = 0;
+		return true;
+	}
+}
+//------------------------------------------------------------------------------
