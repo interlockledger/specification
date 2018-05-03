@@ -25,6 +25,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 #include "options.h"
+#include "version.h"
 #include <string.h>
 
 //------------------------------------------------------------------------------
@@ -48,14 +49,16 @@ bool options_read_input(FILE * inp, void * buff, uint64_t buffSize) {
 //------------------------------------------------------------------------------
 void options_print_help(const char * progName) {
 
-	printf("Usage: %s [-c] [-d] [-h] [-x] [<value>]\n", progName);
+	printf("ilintconv %s - A simple ILInt encoder/decoder\n", APP_VERSION);
+	printf("Copyright (c) 2018 Open Communications Security.\n\n");
+	printf("Usage:\n\t%s [-c] [-d] [-h] [-x] [<value>]\n", progName);
 	printf("Options:\n");
 	printf("\t-c: Read input from the standard input\n");
 	printf("\t-d: Decodes the ILInt value\n");
 	printf("\t-h: Prints this help screen\n");
 	printf("\t-x: Use hexadecimal constants instead of decimal\n");
-	printf("\n");
-	printf("<value>: the value to be encoded or decoded.\n");
+	printf("\t<value>: the value to be encoded or decoded.\n\n");
+	printf("This program is license under the terms of BSD 3-Clause License.\n");
 }
 
 //------------------------------------------------------------------------------
@@ -83,7 +86,7 @@ int options_parse(int argc, char ** argv, options_t * opt) {
 				}
 				uint64_t valLen = strlen(val);
 				if (valLen < OPTIONS_MAX_INPUT) {
-					memcpy(opt->input, val, valLen + 1);
+					memcpy(opt->input, val, (size_t)(valLen + 1));
 				} else {
 					return ERR_VALUE_TOO_LONG;
 				}

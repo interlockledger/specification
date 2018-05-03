@@ -24,7 +24,7 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 cmake_minimum_required(VERSION 3.9)
 project(ilintconv
-	VERSION 1.2.3.4)
+	VERSION 0.1)
 
 # Including the global modules
 set(MSVC_STATIC_CRT 1)
@@ -32,6 +32,11 @@ include("cmake/MSVCCRT.cmake")
 
 # GoogleTest
 include("cmake/GTest.cmake")
+
+configure_file (
+	${CMAKE_CURRENT_SOURCE_DIR}/src/version.h.in
+	${CMAKE_CURRENT_SOURCE_DIR}/src/version.h
+)
 
 add_executable(ilintconv
 	src/errors.h
