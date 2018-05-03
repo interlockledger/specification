@@ -1,11 +1,10 @@
-# ILInt Reference Implementations
+# ILInt Tools
 
 ## Contents
 
-This directory contains the reference implementation of **ILInt**:
+This directory contains a few tools that can be used to work with **ILInt**:
 
-* src-c: C reference implementation;
-* src-csharp: C# reference implementation;
+* ilintconv: A simple command line tool used to encode/decode **ILInt** values;
 
 ## License
 
