@@ -36,31 +36,75 @@ extern "C" {
 #include <stdio.h>
 #include "errors.h"
 
+/**
+ * Type used to identify the program operation.
+ */
 typedef enum {
+	/**
+	 * Show help.
+	 */
 	OP_HELP,
+	/**
+	* Decode the input.
+	*/
 	OP_DECODE,
+	/**
+	* Encode the input.
+	*/
 	OP_ENCODE
 } options_op_t;
 
+/**
+ * Maximum size of the input value.
+ */
 #define OPTIONS_MAX_INPUT 32
 
+/**
+ * Type used to hold the options passed to the program.
+ */
 typedef struct options_t {
+	/**
+	 * Current operation.
+	 */
 	options_op_t operation;
+	/**
+	 * Flag that indicates if the input is decimal or hexadecimal
+	 * when encoding.
+	 */
 	bool hex;
+	/**
+	 * Flag that determines if the input should be read from stdin.
+	 */
 	bool readInput;
+	/**
+	 * The value of the input.
+	 */
 	char input[OPTIONS_MAX_INPUT];
 } options_t;
 
-
+/**
+ * Verifies if the input is set or not.
+ *
+ * @param[in] opt A pointer to a options_t.
+ * @return true if the input is set or false otherwise.
+ */
 #define options_is_input_set(opt) ((opt)->input[0] != 0)
 
 /**
- * Reads the input from a file.
+ * Reads the input from a file. This function will fail if the buffer
+ * is not large enough to hold all the input available in the stream.
+ * 
+ * @param[in] inp The input stream.
+ * @param[out] buff The output buffer.
+ * @param[in] buffSize The size of buff in bytes.
+ * @return true for success or false otherwise.
  */ 
 bool options_read_input(FILE * inp, void * buff, uint64_t buffSize);
 
 /**
  * Prints the help screen.
+ *
+ * @param[in] progName The name of the program.
  */ 
 void options_print_help(const char * progName);
 

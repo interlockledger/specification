@@ -18,9 +18,20 @@ ilintconv [-c] [-d] [-x] [-h] [<value>]
 * <value>: The value to be converted
 
 When encoding, the value must be a valid decimal and/or hexadecimal (if -x is used)
-value that can be stored inside an unsigned 64-bit integer.
+value that can be stored inside an unsigned 64-bit integer. When decoding, the input
+must be a valid hexadecimal string with 2 to 18 charactes.
 
-When decoding, the input must be a valid hexadecimal string with 2 to 18 charactes.
+### Return codes
+
+ Code | Meaning
+ ---- | -------
+  0 | Success
+  1 | Unknown option
+  2 | Too many options
+  3 | The input value is too long
+  4 | No input value
+  5 | The input value is invalid
+  6 | Unable to convert/decode the value due to a runtime error
 
 ## How to build
 
