@@ -35,12 +35,13 @@ namespace InterlockRecord.Common
     {
         public const int ILINT_BASE = 0xF8;
 
+        public static ILTag Decoded(this byte[] buffer) => ILTag.DeserializeFrom(buffer);
+
         public static ulong ILIntDecode(this byte[] buffer) => ILIntDecode(new MemoryStream(buffer, 0, buffer.Length));
 
         public static ulong ILIntDecode(this byte[] buffer, int index, int count) => ILIntDecode(new MemoryStream(buffer, index, count));
 
-        public static ulong ILIntDecode(this Stream stream)
-        {
+        public static ulong ILIntDecode(this Stream stream) {
             ulong value = 0;
             var nextByte = stream.ReadSingleByte();
             if (nextByte < ILINT_BASE)
@@ -53,10 +54,8 @@ namespace InterlockRecord.Common
             return value + ILINT_BASE;
         }
 
-        public static byte[] ILIntEncode(this ulong value, byte[] buffer, int offset, int count)
-        {
-            ILIntEncode(value, b =>
-            {
+        public static byte[] ILIntEncode(this ulong value, byte[] buffer, int offset, int count) {
+            ILIntEncode(value, b => {
                 if (--count < 0)
                     throw new TooFewBytesException();
                 buffer[offset++] = b;
@@ -64,20 +63,17 @@ namespace InterlockRecord.Common
             return buffer;
         }
 
-        public static Stream ILIntEncode(this Stream stream, ulong value)
-        {
+        public static Stream ILIntEncode(this Stream stream, ulong value) {
             value.ILIntEncode(stream.WriteByte);
             return stream;
         }
 
-        public static byte[] ILIntEncode(this ulong value)
-        {
+        public static byte[] ILIntEncode(this ulong value) {
             int size = ILIntSize(value);
             return value.ILIntEncode(new byte[size], 0, size);
         }
 
-        public static int ILIntSize(this ulong value)
-        {
+        public static int ILIntSize(this ulong value) {
             if (value < ILINT_BASE)
                 return 1;
             if (value <= (0xFF + ILINT_BASE))
@@ -97,8 +93,30 @@ namespace InterlockRecord.Common
             return 9;
         }
 
-        private static void ILIntEncode(this ulong value, Action<byte> writeByte)
-        {
+        public static byte[] ToBytesHelper(Action<Stream> serialize) {
+            if (serialize == null) {
+                throw new ArgumentNullException(nameof(serialize));
+            }
+
+            using (var s = new MemoryStream()) {
+                serialize(s);
+                s.Flush();
+                return s.GetBuffer().PartOf((int)s.Position);
+            }
+        }
+
+        public static ILTagArrayOfILTag<TA> ToTagArray<T, TA>(this IEnumerable<T> list, Func<T, TA> convert) where TA : ILTag {
+            if (convert == null) {
+                throw new ArgumentNullException(nameof(convert));
+            }
+            return new ILTagArrayOfILTag<TA>(list?.Select(st => convert(st)).ToArray());
+        }
+
+        private static void ILIntEncode(this ulong value, Action<byte> writeByte) {
+            if (writeByte == null) {
+                throw new ArgumentNullException(nameof(writeByte));
+            }
+
             int size = ILIntSize(value);
             if (size == 1) {
                 writeByte((byte)(value & 0xFF));
@@ -110,5 +128,4 @@ namespace InterlockRecord.Common
                 }
             }
         }
-    }
 }
