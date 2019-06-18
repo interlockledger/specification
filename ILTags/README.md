@@ -130,7 +130,7 @@ The Range defines a contiguous range of UINT64 numbers, at least 1 and a maximum
 one ILInt for the first number in the range, followed by a count of sequential numbers in the range serialized 
 as one unsigned short (16 bits) in big-endian format.
 
-	Ex.: [128-136] => 23, 3, 128, 8, 0
+	Ex.: [128-136] => 23, 3, 128, 0, 8
 
 #### Version
 
