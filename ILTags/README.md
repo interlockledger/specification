@@ -137,7 +137,7 @@ as one unsigned short (16 bits) in big-endian format.
 The Version defines a Semantic Version Number with four parts (major.minor.revision.build). It uses the TagID 24 and holds
 four signed integers (32 bits) serialized in big-endian format in the order of 'major', 'minor', 'revision' and 'build'.
 
-	Ex.: 1.0.0.0 => 24, 16, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
+	Ex.: 1.2.3.4 => 24, 16, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 4
 
 #### ITU Object Identifier
 
