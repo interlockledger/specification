@@ -16,11 +16,12 @@ to encode the integer types. Its main design goals are:
 ## Format
 
 As a TLV (type, lenght and value) encoding, each tag will be composed by a type (an
-unsigned 64-bit integer), length (an unsigned 64-bit integer) and the value (an array
-of bytes).
+unsigned 64-bit integer), length (an unsigned 64-bit integer, which is ommited for the implicit format, see below) 
+and the value (an array of bytes).
 
 In order to keep the format as compact as possible, the **ILTags** format defines two
-distinct formats, one called **explicit** and other called **implicit**. The **explicit** tags are used to represent general values while the **implicit** tags are used to represent basic types.
+distinct formats, one called **explicit** and other called **implicit**. The **explicit** tags are used to represent 
+general values while the **implicit** tags are used to represent basic types.
 
 ### Explicit tags
 
@@ -87,6 +88,12 @@ TagId | Type | Value Type | Tag name | ASN.1 Equivalent
 23 | Range | A range of ILTagId | IL_RANGE_TAG | -
 24 | Version | Semantic version number (major.minor.revision.build) | IL_VERSION_TAG | -
 25 | ITU Object Identifier | An array of ILint (reserved for future uses). | IL_OID_TAG | OBJECT IDENTIFIER
+26 | Reserved | - | Reserved for future uses. | - 
+27 | Reserved | - | Reserved for future uses. | - 
+28 | Reserved | - | Reserved for future uses. | - 
+29 | Reserved | - | Reserved for future uses. | - 
+30 | Dictionary | A dictionary with string keys and ILTags as values (may have different kinds of values for each entry) | IL_DICTIONARY | - 
+31 | StringDictionary | A dictionary with string keys and string values | IL_STRING_DICTIONARY | -
 
 All values from 26 to 31 are reserved for future uses.
 
@@ -104,7 +111,9 @@ The BigInteger represents a big integer value. It uses the TagID 18 and holds th
 
 #### BigDecimal
 
-The BigDecimal represents a big decimal value. It uses the TagID 19 and holds two fields. The first field is an 32-bit signed integer that represents the scale of the value followed by the integral part of the value encoded as a two's complement big endian value. The actual value is computed as follows:
+The BigDecimal represents a big decimal value. It uses the TagID 19 and holds two fields. The first field is an 32-bit signed integer that 
+represents the scale of the value followed by the integral part of the value encoded as a two's complement big endian value. 
+The actual value is computed as follows:
 
     v = integralPart * 10^(-scale)
 
@@ -142,7 +151,22 @@ four signed integers (32 bits) serialized in big-endian format in the order of '
 #### ITU Object Identifier
 
 This tag stores the ITU Object identifier. Each element will be stored as a 64 bit
-unsigned integer encoded using a ILInt format. In other words, it is just a sequence of ILInt values (one for each element) preceeded by an ILInt that encodes the number of elements. It follows the same serialization of IL_ILINTARRAY_TAG.
+unsigned integer encoded using a ILInt format. In other words, it is just a sequence of ILInt values (one for each element) 
+preceeded by an ILInt that encodes the number of elements. It follows the same serialization of IL_ILINTARRAY_TAG.
+
+#### Dictionary
+
+The Dictionary is a simple array of pairs of string keys and ILTag values. It uses the TagID 30 and contains
+an ILInt that represents the number of pairs followed by the serialization of each pair, first the key as a String and then the tagged value.
+
+	Ex.: ["key"] = true => 30, 8, 1, 17, 3, 107, 101, 121, 1, 1
+	
+#### StringDictionary
+
+The StringDictionary is a simple array of pairs of string keys and string values. It uses the TagID 31 and contains
+an ILInt that represents the number of pairs followed by the serialization of each pair, first the key and then the value.
+
+	Ex.: ["key"] = "value" => 31, 13, 1, 17, 3, 107, 101, 121, 17, 5, 118, 97, 108, 117, 101
 
 ## References
 
