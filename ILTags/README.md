@@ -95,7 +95,7 @@ TagId | Type | Value Type | Tag name | ASN.1 Equivalent
 30 | Dictionary | A dictionary with string keys and ILTags as values (may have different kinds of values for each entry) | IL_DICTIONARY | - 
 31 | StringDictionary | A dictionary with string keys and string values | IL_STRING_DICTIONARY | -
 
-All values from 26 to 31 are reserved for future uses.
+All values from 26 to 29 are reserved for future uses.
 
 #### ByteArray
 
@@ -104,6 +104,11 @@ The ByteArray is a simple byte array value. It uses the TagID 16 and holds a raw
 #### String
 
 The String represents a text value. It uses the TagID 17 and holds a UTF-8 encoded value.
+
+	Ex.: 
+		"value" => 17, 5, 118, 97, 108, 117, 101 
+		"ação" => 17, 6, 97, 195, 167, 195, 163, 111
+		
 
 #### BigInteger
 
