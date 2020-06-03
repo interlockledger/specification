@@ -92,8 +92,8 @@ TagId | Type | Value Type | Tag name | ASN.1 Equivalent
 27 | Reserved | - | Reserved for future uses. | - 
 28 | Reserved | - | Reserved for future uses. | - 
 29 | Reserved | - | Reserved for future uses. | - 
-30 | Dictionary | A dictionary with string keys and ILTags as values (may have different kinds of values for each entry) | IL_DICTIONARY | - 
-31 | StringDictionary | A dictionary with string keys and string values | IL_STRING_DICTIONARY | -
+30 | Dictionary | A dictionary with string keys and ILTags as values (may have different kinds of values for each entry) | IL_DICTIONARY_TAG | - 
+31 | StringDictionary | A dictionary with string keys and string values | IL_STRING_DICTIONARY_TAG | -
 
 All values from 26 to 29 are reserved for future uses.
 
