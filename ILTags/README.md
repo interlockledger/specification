@@ -46,7 +46,7 @@ Value | byte[n] | The value of the tag as a byte array. Its size will depend on 
 
 It is important to notice that the TagID of all implicit tags will be always smaller than 16.
 
-The definition of the TagIds are:
+The definition of the TagIDs are:
 
 TagID | Type | Size | Value Type | Tag name | ASN.1 Equivalent
 ----- | ---- | ---- | ---------- | -------- | ----------------
@@ -85,7 +85,7 @@ TagID | Type | Value Type | Tag name | ASN.1 Equivalent
 20 | ILIntArray | An array of ILint. | IL_ILINTARRAY_TAG | -
 21 | ILTagArray | An array of ILTag | IL_ILTAGARRAY_TAG | - 
 22 | ILTagSequence | An sequence of ILTag | IL_ILTAGSEQ_TAG | -
-23 | Range | A range of ILTagId | IL_RANGE_TAG | -
+23 | Range | A range of TagID | IL_RANGE_TAG | -
 24 | Version | Semantic version number (major.minor.revision.build) | IL_VERSION_TAG | -
 25 | ITU Object Identifier | An array of ILint (reserved for future uses). | IL_OID_TAG | OBJECT IDENTIFIER
 26 | Reserved | - | Reserved for future uses. | - 
