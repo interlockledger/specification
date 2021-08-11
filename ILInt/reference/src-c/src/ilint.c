@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Open Communications Security
+ * Copyright (c) 2017-2021, Open Communications Security
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -27,47 +27,71 @@
 #include "ilint.h"
 
 //------------------------------------------------------------------------------
-int ilint_size(uint64_t v) {
+int ilint_size(uint64_t v)
+{
 
-	if (v < ILINT_BASE) {
+	if (v < ILINT_BASE)
+	{
 		return 1;
-	} else if (v <= (0xFF + ILINT_BASE)) {
+	}
+	else if (v <= (0xFF + ILINT_BASE))
+	{
 		return 2;
-	} else if ( v <= (0xFFFF + ILINT_BASE)){
+	}
+	else if (v <= (0xFFFF + ILINT_BASE))
+	{
 		return 3;
-	} else if ( v <= (0xFFFFFFl + ILINT_BASE)){
+	}
+	else if (v <= (0xFFFFFFl + ILINT_BASE))
+	{
 		return 4;
-	} else if ( v <= (0xFFFFFFFFll + ILINT_BASE)){
+	}
+	else if (v <= (0xFFFFFFFFll + ILINT_BASE))
+	{
 		return 5;
-	} else if ( v <= (0xFFFFFFFFFFll + ILINT_BASE)){
+	}
+	else if (v <= (0xFFFFFFFFFFll + ILINT_BASE))
+	{
 		return 6;
-	} else if ( v <= (0xFFFFFFFFFFFFll + ILINT_BASE)){
+	}
+	else if (v <= (0xFFFFFFFFFFFFll + ILINT_BASE))
+	{
 		return 7;
-	} else if ( v <= (0xFFFFFFFFFFFFFFll + ILINT_BASE)){
+	}
+	else if (v <= (0xFFFFFFFFFFFFFFll + ILINT_BASE))
+	{
 		return 8;
-	} else {
+	}
+	else
+	{
 		return 9;
 	}
 }
 
 //------------------------------------------------------------------------------
-int ilint_encode(uint64_t v, void * out, int outSize) {
+int ilint_encode(uint64_t v, void *out, int outSize)
+{
 	int size;
-	uint8_t * p;
+	uint8_t *p;
 	int i;
 
 	size = ilint_size(v);
-	if (outSize < size) {
+	if (outSize < size)
+	{
 		return 0;
 	}
 	p = (uint8_t *)out;
-	if (size == 1) {
+	if (size == 1)
+	{
 		*p = (uint8_t)(v & 0xFF);
-	} else {
+	}
+	else
+	{
 		*p = ILINT_BASE + (size - 2);
 		p++;
 		v = v - ILINT_BASE;
-		for (i = ((size - 2) * 8); i >= 0; i -=8, p++) {
+		for (i = ((size - 2) * 8); i >= 0; i -= 8, p++)
+		{
 			*p = (uint8_t)((v >> i) & 0xFF);
 		}
 	}
@@ -75,31 +99,39 @@ int ilint_encode(uint64_t v, void * out, int outSize) {
 }
 
 //------------------------------------------------------------------------------
-int ilint_decode(const void * inp, int inpSize, uint64_t * v) {
-	const uint8_t * p;
-	const uint8_t * pEnd;
+int ilint_decode(const void *inp, int inpSize, uint64_t *v)
+{
+	const uint8_t *p;
+	const uint8_t *pEnd;
 	int size;
 
-	if (inpSize <= 0) {
+	if (inpSize <= 0)
+	{
 		return 0;
 	}
-	p = (const uint8_t *) inp;
+	p = (const uint8_t *)inp;
 	size = *p;
-	if (size < ILINT_BASE) {
+	if (size < ILINT_BASE)
+	{
 		*v = size;
 		return 1;
-	} else {
+	}
+	else
+	{
 		p++;
 		size = size - ILINT_BASE + 1;
-		if (inpSize <= size) {
+		if (inpSize <= size)
+		{
 			return 0;
 		}
 		pEnd = p + size;
 		*v = 0;
-		for (; p < pEnd; p++) {
+		for (; p < pEnd; p++)
+		{
 			*v = ((*v) << 8) | ((*p) & 0xFF);
 		}
-		if (*v > (0xFFFFFFFFFFFFFFFFll - ILINT_BASE)) {
+		if (*v > (0xFFFFFFFFFFFFFFFFll - ILINT_BASE))
+		{
 			return 0;
 		}
 		*v += ILINT_BASE;
@@ -109,4 +141,30 @@ int ilint_decode(const void * inp, int inpSize, uint64_t * v) {
 }
 
 //------------------------------------------------------------------------------
+uint64_t ilintsig_enc(int64_t v)
+{
+	uint64_t tmp = (uint64_t)v;
+	if (tmp & 0x8000000000000000l)
+	{
+		return ~(tmp << 1);
+	}
+	else
+	{
+		return (tmp << 1);
+	}
+}
 
+//------------------------------------------------------------------------------
+int64_t ilintsig_dec(uint64_t v)
+{
+	if (v & 0x1)
+	{
+		return (int64_t)(~(v >> 1));
+	}
+	else
+	{
+		return (int64_t)(v >> 1);
+	}
+}
+
+//------------------------------------------------------------------------------

@@ -62,12 +62,60 @@ Binary | Value | Value (hex)
 0xFE 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF | 72057594037928183 | 0x1000000000000F7
 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0x07 | 18446744073709551615 | 0xFFFFFFFFFFFFFFFF
 
+## Encoding negative numbers
+
+One way of encoding negative numbers using **ILInt** is to convert it into their unsigned value
+and than encode it directly. This, however is not optimal because small negative values, such as
+-1 will be converted into 0xFFFFFFFFFFFFFFFF. This will result in -1 being encoded using 9 bytes,
+breking the purpose of **ILInt** that aims to use less space to store smaller absolute values.
+
+To overcome this limitation, the **ILInt** standard defines a signed value transformation, called
+**ILIntSignEnc** and its reverse **ILIntSignDec**. The ideia behind this transformation is to encode
+the negative numbers in a way that minimize the number of msb set and thus use less space when encoded
+using **ILInt**.
+
+**ILIntSignEnc** is defined as follows:
+
+1. Convert the signed 64-bit value into an unsigned *v* value using two's complement;
+2. If the sign bit (bit 63) of *v* is set, let *e* be *not*
+   (*v* *shl* 1);
+3. If the sign bit (bit 63) of *v* is not set, let *e* be (*v* *shl* 1);
+4. Return *e*;
+
+where *shl* is a bitwise shift lef operation and *not* is a bitwise not.
+
+**ILIntSignDec** is defined as follows:
+
+1. If bit 0 of *e* is set, let *d* be *e* *shr* 1;
+2. If bit 1 of *e* is set, let *d* be *not* (*e* *shr* 1);
+3. Let *r* be *e* converted to a 64-bit signed value using two's complement;
+4. Return *r*;
+
+where *shr* is an unsigned shift right operation and *not* is a bitwise not.
+
+Using this encoding, the sign bit is moved to the least significant bit
+and the value is always converted to a small value if its absolute value
+is small.
+
+If this encoding scheme is applied to 8-bits values, the procedure will be be illustrated as follows:
+
+ Input | 2's complement | shl      | not      | Encoded
+ ----- | -------------- | -------- | -------- | -------
+ `0`     | `00000000`       | `00000000` | -        | `00000000`
+ `1`     | `00000001`       | `00000010` | -        | `00000010`
+ `127`   | `01111111`       | `11111110` | -        | `11111110`
+ `-1`    | `11111111`       | `11111110` | `00000001` | `00000001`
+ `-2`    | `11111110`       | `11111100` | `00000011` | `00000011`
+ `-128`  | `10000000`       | `00000000` | `11111111` | `11111111`
+
+
+After the transformation, the value is encoded using **ILInt** as it should be with any unsigned value.
+
 ## Limitations
 
 This format has a few well known limitations:
 
 * In this encoding, numbers larger than 72057594037928183 will require 9 bytes instead of 8 to be encoded;
-* It is not possible to encode negative numbers;
 
 ## Licensing
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Open Communications Security
+ * Copyright (c) 2017-2021, Open Communications Security
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -50,7 +50,7 @@ int ilint_size(uint64_t v);
  * @param[in] outSize The size of out in bytes.
  * @return The size in bytes or zero in case of error.
  */
-int ilint_encode(uint64_t v, void * out, int outSize);
+int ilint_encode(uint64_t v, void *out, int outSize);
 
 /**
  * Decodes the given value encoded as an ILInt.
@@ -60,7 +60,22 @@ int ilint_encode(uint64_t v, void * out, int outSize);
  * @param[out] v The decoded value.
  * @return The number of bytes used or zero in case of error.
  */
-int ilint_decode(const void * inp, int inpSize, uint64_t * v);
+int ilint_decode(const void *inp, int inpSize, uint64_t *v);
+
+/**
+ * Performs the ILIntSignEnc transformation.
+ * 
+ * @param[in] v The value to be encoded.
+ * @return The encoded value.
+ */
+uint64_t ilintsig_enc(int64_t v);
+
+/**
+ * Performs the ILIntSignDec transformation.
+ * 
+ * @param[in] v The value to be decoded.
+ * @return The decoded value.
+ */
+int64_t ilintsig_dec(uint64_t v);
 
 #endif //__ILINT_H__
-

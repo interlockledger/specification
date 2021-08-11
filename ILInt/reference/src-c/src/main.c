@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Open Communications Security
+ * Copyright (c) 2017-2021, Open Communications Security
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or without
@@ -29,24 +29,37 @@
 #include "ilint.h"
 
 //------------------------------------------------------------------------------
-void printBin(const void * v, size_t vSize) {
-	const uint8_t * p;
-	const uint8_t * pEnd;
+void printBin(const void *v, size_t vSize)
+{
+	const uint8_t *p;
+	const uint8_t *pEnd;
 
 	p = (const uint8_t *)v;
 	pEnd = p + vSize;
-	for(; p != pEnd; p++) {
+	for (; p != pEnd; p++)
+	{
 		printf("%02X", *p);
 	}
 }
 
 //------------------------------------------------------------------------------
-void printILIntSize(uint64_t v) {
+void printILIntSize(uint64_t v)
+{
 	printf("\tSize of %lu (0x%lX): %d\n", v, v, ilint_size(v));
 }
 
 //------------------------------------------------------------------------------
-int main(int argc, char argv) {
+void printSignedTransform(int64_t v)
+{
+
+	uint64_t e = ilintsig_enc(v);
+	int64_t d = ilintsig_dec(e);
+	printf("\tValue %ld (0x%lX), Encoded: 0x%lX; Decoded: %ld;\n", v, v, e, d);
+}
+
+//------------------------------------------------------------------------------
+int main(int argc, char argv)
+{
 	uint8_t buff[16];
 
 	// Print size
@@ -62,9 +75,13 @@ int main(int argc, char argv) {
 	printILIntSize(0xF8ll + 0xFFFFFFll + 1);
 	printILIntSize(0xFFFFFFFFFFFFFFFFll);
 
-
-
+	printf("printSignedTransfer():\n");
+	printSignedTransform(0);
+	printSignedTransform(1);
+	printSignedTransform(0x7FFFFFFFFFFFFFFFl);
+	printSignedTransform(-1);
+	printSignedTransform(-2);
+	printSignedTransform((int64_t)0x8000000000000000l);
 	return 0;
 }
 //------------------------------------------------------------------------------
-
