@@ -64,7 +64,7 @@ TagID | Type | Size | Value Type | Tag name | ASN.1 Equivalent
 11 | binary32 | 4 | IEEE754 32-bit floating point. | IL_BIN32_TAG | -
 12 | binary64 | 8 | IEEE754 64-bit floating point. | IL_BIN64_TAG | -
 13 | binary128 | 16 | IEEE754 128-bit floating point. | IL_BIN128_TAG | -
-14 | Reserved | - | Reserved for future uses. | - | -
+14 | ILIntSigned | 1 to 9 | A ILIntSigned value. | IL_ILINT_SIGNED_TAG | -
 15 | Reserved | - | Reserved for future uses. | - | -
 
 All integer values are encoded in big endian (most significant bit first) format while
