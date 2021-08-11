@@ -67,7 +67,7 @@ Binary | Value | Value (hex)
 One way of encoding negative numbers using **ILInt** is to convert it into their unsigned value
 and than encode it directly. This, however is not optimal because small negative values, such as
 -1 will be converted into 0xFFFFFFFFFFFFFFFF. This will result in -1 being encoded using 9 bytes,
-breking the purpose of **ILInt** that aims to use less space to store smaller absolute values.
+breaking the purpose of **ILInt** that aims to use less space to store smaller absolute values.
 
 To overcome this limitation, the **ILInt** standard defines a signed value transformation, called
 **ILIntSignEnc** and its reverse **ILIntSignDec**. The ideia behind this transformation is to encode
