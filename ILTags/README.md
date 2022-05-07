@@ -112,7 +112,7 @@ The String represents a text value. It uses the TagID 17 and holds a UTF-8 encod
 
 #### BigInteger
 
-The BigInteger represents a big integer value. It uses the TagID 18 and holds the big integer value encoded as a two's complement big endian value.
+The BigInteger represents a big integer value. It uses the TagID 18 and holds the big integer value encoded as a two's complement big endian value. The payload of this tag must have at least 1 byte.
 
 #### BigDecimal
 
@@ -121,6 +121,8 @@ represents the scale of the value followed by the integral part of the value enc
 The actual value is computed as follows:
 
     v = integralPart * 10^(-scale)
+
+The payload of this tag must have at least 5 bytes. One for the integral part and 4 for the scale.
 
 #### ILIntArray
 
