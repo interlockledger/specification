@@ -103,24 +103,43 @@ The ByteArray is a simple byte array value. It uses the TagID 16 and holds a raw
 
 #### String
 
-The String represents a text value. It uses the TagID 17 and holds a UTF-8 encoded value.
+The String represents a text value. It uses the TagID 17 and holds a UTF-8 encoded value. Examples:
 
-	Ex.: 
-		"value" => 17, 5, 118, 97, 108, 117, 101 
-		"ação" => 17, 6, 97, 195, 167, 195, 163, 111
-		
+- "value" => `[17, 5, 118, 97, 108, 117, 101]`
+- "ação" => `[17, 6, 97, 195, 167, 195, 163, 111]`
 
 #### BigInteger
 
 The BigInteger represents a big integer value. It uses the TagID 18 and holds the big integer value encoded as a two's complement big endian value. The payload of this tag must have at least 1 byte.
 
+These are some examples of two's complement big endian values:
+
+- 0: `[0x00]`;
+- 127: `[0x7F]`;
+- 255: `[0x00, 0xFF]`;
+- -1: `[0xFF]`;
+
+Notice that, if the number of bits is divisible by 8, the encoding will start with a 0x00. This is required because all values with the most significant bit set to 1 is a negative value.
+
+The values must be encoded with the smallest number of bytes.
+
+Both positive and negative numbers must be encoded using the smallest possible number of bytes.
+
 #### BigDecimal
 
 The BigDecimal represents a big decimal value. It uses the TagID 19 and holds two fields. The first field is an 32-bit signed integer that 
-represents the scale of the value followed by the integral part of the value encoded as a two's complement big endian value. 
-The actual value is computed as follows:
+represents the scale of the value followed by the integral part of the value encoded as a two's complement big endian value. The actual value is computed by the equation: 
 
-    v = integralPart * 10^(-scale)
+- `v = integralPart * 10^(-scale)`
+
+For example, the value -6.02214076E-23 will have the exponent set to 31 and the integral part set to -602214076. The payload tag serialization will be `[0x13, 0x08, 0x00, 0x00, 0x00, 0x1F, 0xDC, 0x1A, 0xF1, 0x44]`.
+
+This can be decomposed in:
+
+- `[0x13]`: The tag id;
+- `[0x08]`: The payload size;
+- `[0x00, 0x00, 0x00, 0x1F]`: The exponent (31) encoded as a signed 32-bit integer in big endian format;
+- `[0xDC, 0x1A, 0xF1, 0x44]`: The integral part (-602214076) encoded in two's complement;
 
 The payload of this tag must have at least 5 bytes. One for the integral part and 4 for the scale.
 
